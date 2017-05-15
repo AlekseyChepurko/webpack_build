@@ -5,7 +5,7 @@ const webpack = require('webpack');
 
 const buildPath = "build";
 //TODO NODE_ENV check to propd
-const isProd = process.env.NODE_ENV ? true : false;
+const isProd = process.env.npm_lifecycle_event === 'prod';
 const cssDev = ['style-loader','css-loader','sass-loader'];
 const cssProd = ExtractTextPlugin.extract({
     fallback: 'style-loader',
@@ -13,8 +13,9 @@ const cssProd = ExtractTextPlugin.extract({
     publicPath: buildPath
 });
 const cssConfig = isProd  ? cssProd : cssDev;
-// console.log(process.env.NODE_ENV == "production");
 
+console.log(isProd ? "production build" : "development build");
+console.log(process.argv);
 module.exports = {
     entry: './src/index.js',
     output: {
