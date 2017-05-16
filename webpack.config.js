@@ -2,7 +2,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const webpack = require('webpack');
-
 const buildPath = "build";
 //TODO NODE_ENV check to propd
 const isProd = process.env.npm_lifecycle_event === 'prod';
@@ -10,19 +9,16 @@ const cssDev = ['style-loader','css-loader','sass-loader'];
 const cssProd = ExtractTextPlugin.extract({
     fallback: 'style-loader',
     use: ['css-loader','sass-loader'],
-    publicPath: buildPath
+    publicPath: "/"
 });
-const cssConfig = isProd  ? cssProd : cssDev;
-
+const cssConfig = isProd ? cssProd : cssDev;
 console.log(isProd ? "production build" : "development build");
-console.log(process.argv);
 module.exports = {
     entry: './src/index.js',
     output: {
         path: path.resolve(__dirname, buildPath),
         filename: 'bundle.js'
     },
-
     module: {
         rules: [
             {
@@ -32,13 +28,12 @@ module.exports = {
             { test: /\.js$/, exclude: /node_modules/, loader: "babel-loader" },
             //TODO static dir check in regexp
             //TODO prod build with build dir
-            {test: /\.(jpe?g|png|gif|svg)$/,
-                use: ['file-loader?name=/images/[hash].[ext]',
+            {test: /static\/.+\.(jpe?g|png|gif|svg)$/,
+                use: ['file-loader?name=images/[hash].[ext]',
                       'image-webpack-loader'
                 ]}
         ]
     },
-
     plugins: [
         new HtmlWebpackPlugin({
             title: "Stiv",
@@ -63,5 +58,4 @@ module.exports = {
         open: true,
         hot: true
     },
-
 };
